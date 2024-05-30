@@ -28,14 +28,70 @@ def insert_data():
         msg.showinfo("Insert Status","Data Inserted Successfully")
                      
 def search_data():
-    print("Search Clicked")
+    e_fname.delete(0,'end')
+    e_lname.delete(0,'end')
+    e_email.delete(0,'end')
+    e_mobile.delete(0,'end')
+    if e_id.get()=="":
+        msg.showinfo("Search Status","Id Is Mandatory")
+    else:
+        conn=create_conn()
+        cursor=conn.cursor()
+        query="select * from student where id=%s"
+        args=(e_id.get(),)
+        cursor.execute(query,args)
+        row=cursor.fetchall()
+        if row:
+            e_fname.insert(0,row[0][1])
+            e_lname.insert(0,row[0][2])
+            e_email.insert(0,row[0][3])
+            e_mobile.insert(0,row[0][4])
+        else:
+            msg.showinfo("Search Status","Id Not Found")
+        conn.close()
+        
 def update_data():
-    print("Update Clicked")
+    if e_fname.get()=="" or e_lname.get()=="" or e_email.get()=="" or e_mobile.get()=="" or e_id.get()=="":
+        msg.showinfo("Update Status","All Fields Are Mandatory")
+    else:
+        conn=create_conn()
+        cursor=conn.cursor()
+        query="update student set fname=%s,lname=%s,email=%s,mobile=%s where id=%s"
+        args=(e_fname.get(),e_lname.get(),e_email.get(),e_mobile.get(),e_id.get())
+        cursor.execute(query,args)
+        conn.commit()
+        e_fname.delete(0,'end')
+        e_lname.delete(0,'end')
+        e_email.delete(0,'end')
+        e_mobile.delete(0,'end')
+        msg.showinfo("Update Status","Data Updated Successfully")
+        conn.close()
+        
 def delete_data():
-    print("Delete Clicked")
+    if e_id.get()=="":
+        msg.showinfo("Delete Status","Id Is Mandatory")
+    else:
+        conn=create_conn()
+        cursor=conn.cursor()
+        query="delete from student where id=%s"
+        args=(e_id.get(),)
+        cursor.execute(query,args)
+        conn.commit()
+        e_fname.delete(0,'end')
+        e_lname.delete(0,'end')
+        e_email.delete(0,'end')
+        e_mobile.delete(0,'end')
+        msg.showinfo("Delete Status","Data Deleted Successfully")
+        conn.close()
 
-
-
+def clear_data():
+    e_id.delete(0,'end')
+    e_fname.delete(0,'end')
+    e_lname.delete(0,'end')
+    e_email.delete(0,'end')
+    e_mobile.delete(0,'end')
+    
+        
 root=Tk()
 root.geometry("350x370")
 root.title("My Tkinter Example")
@@ -82,3 +138,13 @@ update.place(x=171,y=300)
 
 delete=Button(root,text="DELETE",bg="black",fg="white",font=("Arial",12),command=delete_data)
 delete.place(x=250,y=300)
+
+clear=Button(root,text="CLEAR",bg="black",fg="white",font=("Arial",12),command=clear_data)
+clear.place(x=130,y=335)
+
+root.mainloop()
+
+
+
+
+
