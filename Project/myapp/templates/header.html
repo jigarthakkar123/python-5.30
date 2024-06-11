@@ -79,34 +79,41 @@
 					<!-- Menu desktop -->
 					<div class="menu-desktop">
 						<ul class="main-menu">
-							<li class="active-menu">
+							<li>
 								<a href="/">Home</a>
-								<ul class="sub-menu">
-									<li><a href="index.html">Homepage 1</a></li>
-									<li><a href="home-02.html">Homepage 2</a></li>
-									<li><a href="home-03.html">Homepage 3</a></li>
-								</ul>
 							</li>
 
 							<li>
 								<a href="{% url 'product' %}">Shop</a>
 							</li>
-
-							<li class="label1" data-label1="hot">
-								<a href="shoping-cart.html">Features</a>
-							</li>
-
 							<li>
-								<a href="blog.html">Blog</a>
-							</li>
-
-							<li>
-								<a href="about.html">About</a>
+								<a href="{% url 'about' %}">About</a>
 							</li>
 
 							<li>
 								<a href="{% url 'contact' %}">Contact</a>
 							</li>
+							{% if request.session.email %}
+								<li>
+									<a href="{% url 'change-password' %}">Change Password</a>
+								</li>
+								<li>
+									<a href="{% url 'logout' %}">Logout({{request.session.fname}})</a>
+								</li>
+								<li>
+									<a href="{% url 'profile' %}">
+										<img src="{{request.session.profile_picture}}" style="width:50px;height: 50px;border-radius: 50%;">
+									</a>
+								</li>
+							{% else %}
+								<li>
+									<a href="{% url 'signup' %}">Sign Up</a>
+								</li>
+								<li>
+									<a href="{% url 'login' %}">Login</a>
+								</li>
+							{% endif %}
+							
 						</ul>
 					</div>	
 
